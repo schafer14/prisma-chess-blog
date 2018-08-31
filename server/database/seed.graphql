@@ -1,0 +1,47 @@
+# Write your query or mutation here
+mutation CreateTimeControl {
+  control1: createTimeControl(
+    data: {increment: 15, base: 15, class: CLASSIC, isCorrespondence: false}
+  ) {
+    id
+  }
+  control2: createTimeControl(
+    data: {increment: 0, base: 10, class: RAPID, isCorrespondence: false}
+  ) {
+    id
+  }
+  control3: createTimeControl(
+    data: {increment: 3, base: 5, class: BLITZ, isCorrespondence: false}
+  ) {
+    id
+  }
+  control4: createTimeControl(
+    data: {increment: 0, base: 5, class: BLITZ, isCorrespondence: false}
+  ) {
+    id
+  }
+
+  control5: createTimeControl(
+    data: {increment: 2, base: 3, class: BLITZ, isCorrespondence: false}
+  ) {
+    id
+  }
+
+  control6: createTimeControl(
+    data: {increment: 0, base: 3, class: BLITZ, isCorrespondence: false}
+  ) {
+    id
+  }
+
+  control7: createTimeControl(
+    data: {increment: 1, base: 2, class: BULLET, isCorrespondence: false}
+  ) {
+    id
+  }
+
+  control8: createTimeControl(
+    data: {increment: 0, base: 1, class: BULLET, isCorrespondence: false}
+  ) {
+    id
+  }
+}

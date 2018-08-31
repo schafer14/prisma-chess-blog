@@ -1,0 +1,28 @@
+type User {
+  id: ID! @unique
+  sub: String! @unique
+  name: String!
+  rating: Float
+}
+
+type Challenge {
+  id: ID! @unique
+  user: User
+  timeControls: TimeControl
+  rated: Boolean @default(value: "false")
+}
+
+enum TimeControlClasses {
+  BULLET
+  BLITZ
+  RAPID
+  CLASSIC
+}
+
+type TimeControl {
+  id: ID! @unique
+  increment: Float
+  base: Float
+  class: TimeControlClasses
+  isCorrespondence: Boolean @default(value: "false")
+}

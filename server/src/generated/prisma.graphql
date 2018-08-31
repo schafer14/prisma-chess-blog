@@ -1,0 +1,784 @@
+# source: https://us1.prisma.sh/public-shardseeker-99/chess/dev
+# timestamp: Sat Aug 25 2018 13:04:08 GMT+1000 (AEST)
+
+type AggregateChallenge {
+  count: Int!
+}
+
+type AggregateTimeControl {
+  count: Int!
+}
+
+type AggregateUser {
+  count: Int!
+}
+
+type BatchPayload {
+  """The number of nodes that have been affected by the Batch operation."""
+  count: Long!
+}
+
+type Challenge implements Node {
+  id: ID!
+  user(where: UserWhereInput): User
+  timeControls(where: TimeControlWhereInput): TimeControl
+  rated: Boolean
+}
+
+"""A connection to a list of items."""
+type ChallengeConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [ChallengeEdge]!
+  aggregate: AggregateChallenge!
+}
+
+input ChallengeCreateInput {
+  rated: Boolean
+  user: UserCreateOneInput
+  timeControls: TimeControlCreateOneInput
+}
+
+"""An edge in a connection."""
+type ChallengeEdge {
+  """The item at the end of the edge."""
+  node: Challenge!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum ChallengeOrderByInput {
+  id_ASC
+  id_DESC
+  rated_ASC
+  rated_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type ChallengePreviousValues {
+  id: ID!
+  rated: Boolean
+}
+
+type ChallengeSubscriptionPayload {
+  mutation: MutationType!
+  node: Challenge
+  updatedFields: [String!]
+  previousValues: ChallengePreviousValues
+}
+
+input ChallengeSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [ChallengeSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [ChallengeSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [ChallengeSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: ChallengeWhereInput
+}
+
+input ChallengeUpdateInput {
+  rated: Boolean
+  user: UserUpdateOneInput
+  timeControls: TimeControlUpdateOneInput
+}
+
+input ChallengeWhereInput {
+  """Logical AND on all given filters."""
+  AND: [ChallengeWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [ChallengeWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [ChallengeWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  rated: Boolean
+
+  """All values that are not equal to given value."""
+  rated_not: Boolean
+  user: UserWhereInput
+  timeControls: TimeControlWhereInput
+}
+
+input ChallengeWhereUniqueInput {
+  id: ID
+}
+
+"""
+The `Long` scalar type represents non-fractional signed whole numeric values.
+Long can represent values between -(2^63) and 2^63 - 1.
+"""
+scalar Long
+
+type Mutation {
+  createChallenge(data: ChallengeCreateInput!): Challenge!
+  createUser(data: UserCreateInput!): User!
+  createTimeControl(data: TimeControlCreateInput!): TimeControl!
+  updateChallenge(data: ChallengeUpdateInput!, where: ChallengeWhereUniqueInput!): Challenge
+  updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
+  updateTimeControl(data: TimeControlUpdateInput!, where: TimeControlWhereUniqueInput!): TimeControl
+  deleteChallenge(where: ChallengeWhereUniqueInput!): Challenge
+  deleteUser(where: UserWhereUniqueInput!): User
+  deleteTimeControl(where: TimeControlWhereUniqueInput!): TimeControl
+  upsertChallenge(where: ChallengeWhereUniqueInput!, create: ChallengeCreateInput!, update: ChallengeUpdateInput!): Challenge!
+  upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
+  upsertTimeControl(where: TimeControlWhereUniqueInput!, create: TimeControlCreateInput!, update: TimeControlUpdateInput!): TimeControl!
+  updateManyChallenges(data: ChallengeUpdateInput!, where: ChallengeWhereInput): BatchPayload!
+  updateManyUsers(data: UserUpdateInput!, where: UserWhereInput): BatchPayload!
+  updateManyTimeControls(data: TimeControlUpdateInput!, where: TimeControlWhereInput): BatchPayload!
+  deleteManyChallenges(where: ChallengeWhereInput): BatchPayload!
+  deleteManyUsers(where: UserWhereInput): BatchPayload!
+  deleteManyTimeControls(where: TimeControlWhereInput): BatchPayload!
+}
+
+enum MutationType {
+  CREATED
+  UPDATED
+  DELETED
+}
+
+"""An object with an ID"""
+interface Node {
+  """The id of the object."""
+  id: ID!
+}
+
+"""Information about pagination in a connection."""
+type PageInfo {
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: String
+
+  """When paginating forwards, the cursor to continue."""
+  endCursor: String
+}
+
+type Query {
+  challenges(where: ChallengeWhereInput, orderBy: ChallengeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Challenge]!
+  users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
+  timeControls(where: TimeControlWhereInput, orderBy: TimeControlOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [TimeControl]!
+  challenge(where: ChallengeWhereUniqueInput!): Challenge
+  user(where: UserWhereUniqueInput!): User
+  timeControl(where: TimeControlWhereUniqueInput!): TimeControl
+  challengesConnection(where: ChallengeWhereInput, orderBy: ChallengeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ChallengeConnection!
+  usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
+  timeControlsConnection(where: TimeControlWhereInput, orderBy: TimeControlOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TimeControlConnection!
+
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+}
+
+type Subscription {
+  challenge(where: ChallengeSubscriptionWhereInput): ChallengeSubscriptionPayload
+  user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
+  timeControl(where: TimeControlSubscriptionWhereInput): TimeControlSubscriptionPayload
+}
+
+type TimeControl implements Node {
+  id: ID!
+  increment: Float
+  base: Float
+  class: TimeControlClasses
+  isCorrespondence: Boolean
+}
+
+enum TimeControlClasses {
+  BULLET
+  BLITZ
+  RAPID
+  CLASSIC
+}
+
+"""A connection to a list of items."""
+type TimeControlConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [TimeControlEdge]!
+  aggregate: AggregateTimeControl!
+}
+
+input TimeControlCreateInput {
+  increment: Float
+  base: Float
+  class: TimeControlClasses
+  isCorrespondence: Boolean
+}
+
+input TimeControlCreateOneInput {
+  create: TimeControlCreateInput
+  connect: TimeControlWhereUniqueInput
+}
+
+"""An edge in a connection."""
+type TimeControlEdge {
+  """The item at the end of the edge."""
+  node: TimeControl!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum TimeControlOrderByInput {
+  id_ASC
+  id_DESC
+  increment_ASC
+  increment_DESC
+  base_ASC
+  base_DESC
+  class_ASC
+  class_DESC
+  isCorrespondence_ASC
+  isCorrespondence_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type TimeControlPreviousValues {
+  id: ID!
+  increment: Float
+  base: Float
+  class: TimeControlClasses
+  isCorrespondence: Boolean
+}
+
+type TimeControlSubscriptionPayload {
+  mutation: MutationType!
+  node: TimeControl
+  updatedFields: [String!]
+  previousValues: TimeControlPreviousValues
+}
+
+input TimeControlSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [TimeControlSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [TimeControlSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [TimeControlSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: TimeControlWhereInput
+}
+
+input TimeControlUpdateDataInput {
+  increment: Float
+  base: Float
+  class: TimeControlClasses
+  isCorrespondence: Boolean
+}
+
+input TimeControlUpdateInput {
+  increment: Float
+  base: Float
+  class: TimeControlClasses
+  isCorrespondence: Boolean
+}
+
+input TimeControlUpdateOneInput {
+  create: TimeControlCreateInput
+  connect: TimeControlWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
+  update: TimeControlUpdateDataInput
+  upsert: TimeControlUpsertNestedInput
+}
+
+input TimeControlUpsertNestedInput {
+  update: TimeControlUpdateDataInput!
+  create: TimeControlCreateInput!
+}
+
+input TimeControlWhereInput {
+  """Logical AND on all given filters."""
+  AND: [TimeControlWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [TimeControlWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [TimeControlWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  increment: Float
+
+  """All values that are not equal to given value."""
+  increment_not: Float
+
+  """All values that are contained in given list."""
+  increment_in: [Float!]
+
+  """All values that are not contained in given list."""
+  increment_not_in: [Float!]
+
+  """All values less than the given value."""
+  increment_lt: Float
+
+  """All values less than or equal the given value."""
+  increment_lte: Float
+
+  """All values greater than the given value."""
+  increment_gt: Float
+
+  """All values greater than or equal the given value."""
+  increment_gte: Float
+  base: Float
+
+  """All values that are not equal to given value."""
+  base_not: Float
+
+  """All values that are contained in given list."""
+  base_in: [Float!]
+
+  """All values that are not contained in given list."""
+  base_not_in: [Float!]
+
+  """All values less than the given value."""
+  base_lt: Float
+
+  """All values less than or equal the given value."""
+  base_lte: Float
+
+  """All values greater than the given value."""
+  base_gt: Float
+
+  """All values greater than or equal the given value."""
+  base_gte: Float
+  class: TimeControlClasses
+
+  """All values that are not equal to given value."""
+  class_not: TimeControlClasses
+
+  """All values that are contained in given list."""
+  class_in: [TimeControlClasses!]
+
+  """All values that are not contained in given list."""
+  class_not_in: [TimeControlClasses!]
+  isCorrespondence: Boolean
+
+  """All values that are not equal to given value."""
+  isCorrespondence_not: Boolean
+}
+
+input TimeControlWhereUniqueInput {
+  id: ID
+}
+
+type User implements Node {
+  id: ID!
+  sub: String!
+  name: String!
+  rating: Float
+}
+
+"""A connection to a list of items."""
+type UserConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [UserEdge]!
+  aggregate: AggregateUser!
+}
+
+input UserCreateInput {
+  sub: String!
+  name: String!
+  rating: Float
+}
+
+input UserCreateOneInput {
+  create: UserCreateInput
+  connect: UserWhereUniqueInput
+}
+
+"""An edge in a connection."""
+type UserEdge {
+  """The item at the end of the edge."""
+  node: User!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum UserOrderByInput {
+  id_ASC
+  id_DESC
+  sub_ASC
+  sub_DESC
+  name_ASC
+  name_DESC
+  rating_ASC
+  rating_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type UserPreviousValues {
+  id: ID!
+  sub: String!
+  name: String!
+  rating: Float
+}
+
+type UserSubscriptionPayload {
+  mutation: MutationType!
+  node: User
+  updatedFields: [String!]
+  previousValues: UserPreviousValues
+}
+
+input UserSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [UserSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [UserSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [UserSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: UserWhereInput
+}
+
+input UserUpdateDataInput {
+  sub: String
+  name: String
+  rating: Float
+}
+
+input UserUpdateInput {
+  sub: String
+  name: String
+  rating: Float
+}
+
+input UserUpdateOneInput {
+  create: UserCreateInput
+  connect: UserWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
+  update: UserUpdateDataInput
+  upsert: UserUpsertNestedInput
+}
+
+input UserUpsertNestedInput {
+  update: UserUpdateDataInput!
+  create: UserCreateInput!
+}
+
+input UserWhereInput {
+  """Logical AND on all given filters."""
+  AND: [UserWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [UserWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [UserWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  sub: String
+
+  """All values that are not equal to given value."""
+  sub_not: String
+
+  """All values that are contained in given list."""
+  sub_in: [String!]
+
+  """All values that are not contained in given list."""
+  sub_not_in: [String!]
+
+  """All values less than the given value."""
+  sub_lt: String
+
+  """All values less than or equal the given value."""
+  sub_lte: String
+
+  """All values greater than the given value."""
+  sub_gt: String
+
+  """All values greater than or equal the given value."""
+  sub_gte: String
+
+  """All values containing the given string."""
+  sub_contains: String
+
+  """All values not containing the given string."""
+  sub_not_contains: String
+
+  """All values starting with the given string."""
+  sub_starts_with: String
+
+  """All values not starting with the given string."""
+  sub_not_starts_with: String
+
+  """All values ending with the given string."""
+  sub_ends_with: String
+
+  """All values not ending with the given string."""
+  sub_not_ends_with: String
+  name: String
+
+  """All values that are not equal to given value."""
+  name_not: String
+
+  """All values that are contained in given list."""
+  name_in: [String!]
+
+  """All values that are not contained in given list."""
+  name_not_in: [String!]
+
+  """All values less than the given value."""
+  name_lt: String
+
+  """All values less than or equal the given value."""
+  name_lte: String
+
+  """All values greater than the given value."""
+  name_gt: String
+
+  """All values greater than or equal the given value."""
+  name_gte: String
+
+  """All values containing the given string."""
+  name_contains: String
+
+  """All values not containing the given string."""
+  name_not_contains: String
+
+  """All values starting with the given string."""
+  name_starts_with: String
+
+  """All values not starting with the given string."""
+  name_not_starts_with: String
+
+  """All values ending with the given string."""
+  name_ends_with: String
+
+  """All values not ending with the given string."""
+  name_not_ends_with: String
+  rating: Float
+
+  """All values that are not equal to given value."""
+  rating_not: Float
+
+  """All values that are contained in given list."""
+  rating_in: [Float!]
+
+  """All values that are not contained in given list."""
+  rating_not_in: [Float!]
+
+  """All values less than the given value."""
+  rating_lt: Float
+
+  """All values less than or equal the given value."""
+  rating_lte: Float
+
+  """All values greater than the given value."""
+  rating_gt: Float
+
+  """All values greater than or equal the given value."""
+  rating_gte: Float
+}
+
+input UserWhereUniqueInput {
+  id: ID
+  sub: String
+}
