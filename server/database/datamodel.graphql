@@ -1,6 +1,6 @@
-type User {
+type User implements SearchableUser {
   id: ID! @unique
-  sub: String! @unique
+  sub: String
   name: String!
   rating: Float
 }
@@ -23,7 +23,7 @@ enum UserRoles {
 }
 
 type UserRole {
-  user: User
+  user: SearchableUser
   role: UserRoles
 }
 
