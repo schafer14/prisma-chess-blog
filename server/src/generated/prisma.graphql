@@ -1,5 +1,5 @@
 # source: https://us1.prisma.sh/public-shardseeker-99/chess/dev
-# timestamp: Sat Sep 01 2018 09:37:32 GMT+1000 (AEST)
+# timestamp: Sat Sep 01 2018 10:29:19 GMT+1000 (AEST)
 
 type AggregateAnnotatedGame {
   count: Int!
@@ -29,10 +29,15 @@ type AggregateUser {
   count: Int!
 }
 
+type AggregateUserRole {
+  count: Int!
+}
+
 type AnnotatedGame implements Node {
   id: ID!
   startpos(where: FenWhereInput): Fen
   moveSets(where: MoveSetWhereInput, orderBy: MoveSetOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [MoveSet!]
+  users(where: UserRoleWhereInput, orderBy: UserRoleOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [UserRole!]
 }
 
 """A connection to a list of items."""
@@ -48,6 +53,7 @@ type AnnotatedGameConnection {
 input AnnotatedGameCreateInput {
   startpos: FenCreateOneInput
   moveSets: MoveSetCreateManyInput
+  users: UserRoleCreateManyInput
 }
 
 input AnnotatedGameCreateOneInput {
@@ -119,11 +125,13 @@ input AnnotatedGameSubscriptionWhereInput {
 input AnnotatedGameUpdateDataInput {
   startpos: FenUpdateOneInput
   moveSets: MoveSetUpdateManyInput
+  users: UserRoleUpdateManyInput
 }
 
 input AnnotatedGameUpdateInput {
   startpos: FenUpdateOneInput
   moveSets: MoveSetUpdateManyInput
+  users: UserRoleUpdateManyInput
 }
 
 input AnnotatedGameUpdateOneInput {
@@ -193,6 +201,9 @@ input AnnotatedGameWhereInput {
   moveSets_every: MoveSetWhereInput
   moveSets_some: MoveSetWhereInput
   moveSets_none: MoveSetWhereInput
+  users_every: UserRoleWhereInput
+  users_some: UserRoleWhereInput
+  users_none: UserRoleWhereInput
 }
 
 input AnnotatedGameWhereUniqueInput {
@@ -935,39 +946,42 @@ input MoveSetWhereInput {
 type Mutation {
   createBlogPost(data: BlogPostCreateInput!): BlogPost!
   createChallenge(data: ChallengeCreateInput!): Challenge!
+  createUserRole(data: UserRoleCreateInput!): UserRole!
   createFen(data: FenCreateInput!): Fen!
-  createUser(data: UserCreateInput!): User!
   createTimeControl(data: TimeControlCreateInput!): TimeControl!
   createMoveSet(data: MoveSetCreateInput!): MoveSet!
+  createUser(data: UserCreateInput!): User!
   createAnnotatedGame(data: AnnotatedGameCreateInput!): AnnotatedGame!
   updateBlogPost(data: BlogPostUpdateInput!, where: BlogPostWhereUniqueInput!): BlogPost
   updateChallenge(data: ChallengeUpdateInput!, where: ChallengeWhereUniqueInput!): Challenge
-  updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateTimeControl(data: TimeControlUpdateInput!, where: TimeControlWhereUniqueInput!): TimeControl
+  updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateAnnotatedGame(data: AnnotatedGameUpdateInput!, where: AnnotatedGameWhereUniqueInput!): AnnotatedGame
   deleteBlogPost(where: BlogPostWhereUniqueInput!): BlogPost
   deleteChallenge(where: ChallengeWhereUniqueInput!): Challenge
-  deleteUser(where: UserWhereUniqueInput!): User
   deleteTimeControl(where: TimeControlWhereUniqueInput!): TimeControl
+  deleteUser(where: UserWhereUniqueInput!): User
   deleteAnnotatedGame(where: AnnotatedGameWhereUniqueInput!): AnnotatedGame
   upsertBlogPost(where: BlogPostWhereUniqueInput!, create: BlogPostCreateInput!, update: BlogPostUpdateInput!): BlogPost!
   upsertChallenge(where: ChallengeWhereUniqueInput!, create: ChallengeCreateInput!, update: ChallengeUpdateInput!): Challenge!
-  upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
   upsertTimeControl(where: TimeControlWhereUniqueInput!, create: TimeControlCreateInput!, update: TimeControlUpdateInput!): TimeControl!
+  upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
   upsertAnnotatedGame(where: AnnotatedGameWhereUniqueInput!, create: AnnotatedGameCreateInput!, update: AnnotatedGameUpdateInput!): AnnotatedGame!
   updateManyBlogPosts(data: BlogPostUpdateInput!, where: BlogPostWhereInput): BatchPayload!
   updateManyChallenges(data: ChallengeUpdateInput!, where: ChallengeWhereInput): BatchPayload!
+  updateManyUserRoles(data: UserRoleUpdateInput!, where: UserRoleWhereInput): BatchPayload!
   updateManyFens(data: FenUpdateInput!, where: FenWhereInput): BatchPayload!
-  updateManyUsers(data: UserUpdateInput!, where: UserWhereInput): BatchPayload!
   updateManyTimeControls(data: TimeControlUpdateInput!, where: TimeControlWhereInput): BatchPayload!
   updateManyMoveSets(data: MoveSetUpdateInput!, where: MoveSetWhereInput): BatchPayload!
+  updateManyUsers(data: UserUpdateInput!, where: UserWhereInput): BatchPayload!
   updateManyAnnotatedGames(data: AnnotatedGameUpdateInput!, where: AnnotatedGameWhereInput): BatchPayload!
   deleteManyBlogPosts(where: BlogPostWhereInput): BatchPayload!
   deleteManyChallenges(where: ChallengeWhereInput): BatchPayload!
+  deleteManyUserRoles(where: UserRoleWhereInput): BatchPayload!
   deleteManyFens(where: FenWhereInput): BatchPayload!
-  deleteManyUsers(where: UserWhereInput): BatchPayload!
   deleteManyTimeControls(where: TimeControlWhereInput): BatchPayload!
   deleteManyMoveSets(where: MoveSetWhereInput): BatchPayload!
+  deleteManyUsers(where: UserWhereInput): BatchPayload!
   deleteManyAnnotatedGames(where: AnnotatedGameWhereInput): BatchPayload!
 }
 
@@ -1001,22 +1015,24 @@ type PageInfo {
 type Query {
   blogPosts(where: BlogPostWhereInput, orderBy: BlogPostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [BlogPost]!
   challenges(where: ChallengeWhereInput, orderBy: ChallengeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Challenge]!
+  userRoles(where: UserRoleWhereInput, orderBy: UserRoleOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [UserRole]!
   fens(where: FenWhereInput, orderBy: FenOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Fen]!
-  users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   timeControls(where: TimeControlWhereInput, orderBy: TimeControlOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [TimeControl]!
   moveSets(where: MoveSetWhereInput, orderBy: MoveSetOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [MoveSet]!
+  users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   annotatedGames(where: AnnotatedGameWhereInput, orderBy: AnnotatedGameOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [AnnotatedGame]!
   blogPost(where: BlogPostWhereUniqueInput!): BlogPost
   challenge(where: ChallengeWhereUniqueInput!): Challenge
-  user(where: UserWhereUniqueInput!): User
   timeControl(where: TimeControlWhereUniqueInput!): TimeControl
+  user(where: UserWhereUniqueInput!): User
   annotatedGame(where: AnnotatedGameWhereUniqueInput!): AnnotatedGame
   blogPostsConnection(where: BlogPostWhereInput, orderBy: BlogPostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): BlogPostConnection!
   challengesConnection(where: ChallengeWhereInput, orderBy: ChallengeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ChallengeConnection!
+  userRolesConnection(where: UserRoleWhereInput, orderBy: UserRoleOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserRoleConnection!
   fensConnection(where: FenWhereInput, orderBy: FenOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): FenConnection!
-  usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
   timeControlsConnection(where: TimeControlWhereInput, orderBy: TimeControlOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TimeControlConnection!
   moveSetsConnection(where: MoveSetWhereInput, orderBy: MoveSetOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): MoveSetConnection!
+  usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
   annotatedGamesConnection(where: AnnotatedGameWhereInput, orderBy: AnnotatedGameOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AnnotatedGameConnection!
 
   """Fetches an object given its ID"""
@@ -1029,10 +1045,11 @@ type Query {
 type Subscription {
   blogPost(where: BlogPostSubscriptionWhereInput): BlogPostSubscriptionPayload
   challenge(where: ChallengeSubscriptionWhereInput): ChallengeSubscriptionPayload
+  userRole(where: UserRoleSubscriptionWhereInput): UserRoleSubscriptionPayload
   fen(where: FenSubscriptionWhereInput): FenSubscriptionPayload
-  user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
   timeControl(where: TimeControlSubscriptionWhereInput): TimeControlSubscriptionPayload
   moveSet(where: MoveSetSubscriptionWhereInput): MoveSetSubscriptionPayload
+  user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
   annotatedGame(where: AnnotatedGameSubscriptionWhereInput): AnnotatedGameSubscriptionPayload
 }
 
@@ -1344,6 +1361,130 @@ type UserPreviousValues {
   sub: String!
   name: String!
   rating: Float
+}
+
+type UserRole {
+  user(where: UserWhereInput): User
+  role: UserRoles
+}
+
+"""A connection to a list of items."""
+type UserRoleConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [UserRoleEdge]!
+  aggregate: AggregateUserRole!
+}
+
+input UserRoleCreateInput {
+  role: UserRoles
+  user: UserCreateOneInput
+}
+
+input UserRoleCreateManyInput {
+  create: [UserRoleCreateInput!]
+}
+
+"""An edge in a connection."""
+type UserRoleEdge {
+  """The item at the end of the edge."""
+  node: UserRole!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum UserRoleOrderByInput {
+  role_ASC
+  role_DESC
+  id_ASC
+  id_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type UserRolePreviousValues {
+  role: UserRoles
+}
+
+enum UserRoles {
+  WHITE
+  BLACK
+  ANNOTATOR
+}
+
+type UserRoleSubscriptionPayload {
+  mutation: MutationType!
+  node: UserRole
+  updatedFields: [String!]
+  previousValues: UserRolePreviousValues
+}
+
+input UserRoleSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [UserRoleSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [UserRoleSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [UserRoleSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: UserRoleWhereInput
+}
+
+input UserRoleUpdateInput {
+  role: UserRoles
+  user: UserUpdateOneInput
+}
+
+input UserRoleUpdateManyInput {
+  create: [UserRoleCreateInput!]
+}
+
+input UserRoleWhereInput {
+  """Logical AND on all given filters."""
+  AND: [UserRoleWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [UserRoleWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [UserRoleWhereInput!]
+  role: UserRoles
+
+  """All values that are not equal to given value."""
+  role_not: UserRoles
+
+  """All values that are contained in given list."""
+  role_in: [UserRoles!]
+
+  """All values that are not contained in given list."""
+  role_not_in: [UserRoles!]
+  user: UserWhereInput
 }
 
 type UserSubscriptionPayload {

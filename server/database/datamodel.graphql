@@ -9,10 +9,29 @@ type Fen {
   fen: String!
 }
 
-type AnnotatedGame {
+interface Game {
   id: ID! @unique
   startpos: Fen
   moveSets: [MoveSet!]!
+  users: [UserRole!]!
+}
+
+enum UserRoles {
+  WHITE
+  BLACK
+  ANNOTATOR
+}
+
+type UserRole {
+  user: User
+  role: UserRoles
+}
+
+type AnnotatedGame implements Game {
+  id: ID! @unique
+  startpos: Fen
+  moveSets: [MoveSet!]!
+  users: [UserRole!]!
 }
 
 type BlogPost {
