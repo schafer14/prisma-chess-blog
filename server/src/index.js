@@ -1,10 +1,25 @@
 const {GraphQLServer} = require('graphql-yoga')
-const {Prisma} = require('prisma-binding')
+const {Prisma, forwardTo} = require('prisma-binding')
 
 const resolvers = {
   Query: {
-    timeControls(parent, args, ctx, info) {
-      return ctx.db.query.timeControls({}, info)
+    posts(parent, args, ctx, info) {
+      return ctx.db.query.blogPosts({}, info)
+    },
+    post(parent, args, ctx, info) {
+      return ctx.db.query.blogPosts({where: {id: args.id}}, info)
+    },
+  },
+  Mutation: {
+    createBlogPost: forwardTo('db'),
+    publishBlogPost(parent, {id}, ctx, info) {
+      return ctx.db.mutation.updateBlogPost(
+        {
+          where: {id},
+          data: {published: true},
+        },
+        info,
+      )
     },
   },
 }

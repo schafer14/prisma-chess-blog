@@ -5,6 +5,30 @@ type User {
   rating: Float
 }
 
+type Fen {
+  fen: String!
+}
+
+type AnnotatedGame {
+  id: ID! @unique
+  startpos: Fen
+  moveSets: [MoveSet!]!
+}
+
+type BlogPost {
+  id: ID! @unique
+  slug: String! @unique
+  title: String!
+  game: AnnotatedGame
+  markup: String
+  keywords: [String!]
+  published: Boolean @default(value: "false")
+}
+
+type MoveSet {
+  moves: [String!]!
+}
+
 type Challenge {
   id: ID! @unique
   user: User

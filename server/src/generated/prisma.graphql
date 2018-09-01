@@ -1,7 +1,23 @@
 # source: https://us1.prisma.sh/public-shardseeker-99/chess/dev
-# timestamp: Sat Aug 25 2018 13:04:08 GMT+1000 (AEST)
+# timestamp: Sat Sep 01 2018 09:37:32 GMT+1000 (AEST)
+
+type AggregateAnnotatedGame {
+  count: Int!
+}
+
+type AggregateBlogPost {
+  count: Int!
+}
 
 type AggregateChallenge {
+  count: Int!
+}
+
+type AggregateFen {
+  count: Int!
+}
+
+type AggregateMoveSet {
   count: Int!
 }
 
@@ -13,9 +29,480 @@ type AggregateUser {
   count: Int!
 }
 
+type AnnotatedGame implements Node {
+  id: ID!
+  startpos(where: FenWhereInput): Fen
+  moveSets(where: MoveSetWhereInput, orderBy: MoveSetOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [MoveSet!]
+}
+
+"""A connection to a list of items."""
+type AnnotatedGameConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [AnnotatedGameEdge]!
+  aggregate: AggregateAnnotatedGame!
+}
+
+input AnnotatedGameCreateInput {
+  startpos: FenCreateOneInput
+  moveSets: MoveSetCreateManyInput
+}
+
+input AnnotatedGameCreateOneInput {
+  create: AnnotatedGameCreateInput
+  connect: AnnotatedGameWhereUniqueInput
+}
+
+"""An edge in a connection."""
+type AnnotatedGameEdge {
+  """The item at the end of the edge."""
+  node: AnnotatedGame!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum AnnotatedGameOrderByInput {
+  id_ASC
+  id_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type AnnotatedGamePreviousValues {
+  id: ID!
+}
+
+type AnnotatedGameSubscriptionPayload {
+  mutation: MutationType!
+  node: AnnotatedGame
+  updatedFields: [String!]
+  previousValues: AnnotatedGamePreviousValues
+}
+
+input AnnotatedGameSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [AnnotatedGameSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [AnnotatedGameSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [AnnotatedGameSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: AnnotatedGameWhereInput
+}
+
+input AnnotatedGameUpdateDataInput {
+  startpos: FenUpdateOneInput
+  moveSets: MoveSetUpdateManyInput
+}
+
+input AnnotatedGameUpdateInput {
+  startpos: FenUpdateOneInput
+  moveSets: MoveSetUpdateManyInput
+}
+
+input AnnotatedGameUpdateOneInput {
+  create: AnnotatedGameCreateInput
+  connect: AnnotatedGameWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
+  update: AnnotatedGameUpdateDataInput
+  upsert: AnnotatedGameUpsertNestedInput
+}
+
+input AnnotatedGameUpsertNestedInput {
+  update: AnnotatedGameUpdateDataInput!
+  create: AnnotatedGameCreateInput!
+}
+
+input AnnotatedGameWhereInput {
+  """Logical AND on all given filters."""
+  AND: [AnnotatedGameWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [AnnotatedGameWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [AnnotatedGameWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  startpos: FenWhereInput
+  moveSets_every: MoveSetWhereInput
+  moveSets_some: MoveSetWhereInput
+  moveSets_none: MoveSetWhereInput
+}
+
+input AnnotatedGameWhereUniqueInput {
+  id: ID
+}
+
 type BatchPayload {
   """The number of nodes that have been affected by the Batch operation."""
   count: Long!
+}
+
+type BlogPost implements Node {
+  id: ID!
+  slug: String!
+  title: String!
+  game(where: AnnotatedGameWhereInput): AnnotatedGame
+  markup: String
+  keywords: [String!]!
+  published: Boolean
+}
+
+"""A connection to a list of items."""
+type BlogPostConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [BlogPostEdge]!
+  aggregate: AggregateBlogPost!
+}
+
+input BlogPostCreateInput {
+  slug: String!
+  title: String!
+  markup: String
+  published: Boolean
+  keywords: BlogPostCreatekeywordsInput
+  game: AnnotatedGameCreateOneInput
+}
+
+input BlogPostCreatekeywordsInput {
+  set: [String!]
+}
+
+"""An edge in a connection."""
+type BlogPostEdge {
+  """The item at the end of the edge."""
+  node: BlogPost!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum BlogPostOrderByInput {
+  id_ASC
+  id_DESC
+  slug_ASC
+  slug_DESC
+  title_ASC
+  title_DESC
+  markup_ASC
+  markup_DESC
+  published_ASC
+  published_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type BlogPostPreviousValues {
+  id: ID!
+  slug: String!
+  title: String!
+  markup: String
+  keywords: [String!]!
+  published: Boolean
+}
+
+type BlogPostSubscriptionPayload {
+  mutation: MutationType!
+  node: BlogPost
+  updatedFields: [String!]
+  previousValues: BlogPostPreviousValues
+}
+
+input BlogPostSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [BlogPostSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [BlogPostSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [BlogPostSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: BlogPostWhereInput
+}
+
+input BlogPostUpdateInput {
+  slug: String
+  title: String
+  markup: String
+  published: Boolean
+  keywords: BlogPostUpdatekeywordsInput
+  game: AnnotatedGameUpdateOneInput
+}
+
+input BlogPostUpdatekeywordsInput {
+  set: [String!]
+}
+
+input BlogPostWhereInput {
+  """Logical AND on all given filters."""
+  AND: [BlogPostWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [BlogPostWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [BlogPostWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  slug: String
+
+  """All values that are not equal to given value."""
+  slug_not: String
+
+  """All values that are contained in given list."""
+  slug_in: [String!]
+
+  """All values that are not contained in given list."""
+  slug_not_in: [String!]
+
+  """All values less than the given value."""
+  slug_lt: String
+
+  """All values less than or equal the given value."""
+  slug_lte: String
+
+  """All values greater than the given value."""
+  slug_gt: String
+
+  """All values greater than or equal the given value."""
+  slug_gte: String
+
+  """All values containing the given string."""
+  slug_contains: String
+
+  """All values not containing the given string."""
+  slug_not_contains: String
+
+  """All values starting with the given string."""
+  slug_starts_with: String
+
+  """All values not starting with the given string."""
+  slug_not_starts_with: String
+
+  """All values ending with the given string."""
+  slug_ends_with: String
+
+  """All values not ending with the given string."""
+  slug_not_ends_with: String
+  title: String
+
+  """All values that are not equal to given value."""
+  title_not: String
+
+  """All values that are contained in given list."""
+  title_in: [String!]
+
+  """All values that are not contained in given list."""
+  title_not_in: [String!]
+
+  """All values less than the given value."""
+  title_lt: String
+
+  """All values less than or equal the given value."""
+  title_lte: String
+
+  """All values greater than the given value."""
+  title_gt: String
+
+  """All values greater than or equal the given value."""
+  title_gte: String
+
+  """All values containing the given string."""
+  title_contains: String
+
+  """All values not containing the given string."""
+  title_not_contains: String
+
+  """All values starting with the given string."""
+  title_starts_with: String
+
+  """All values not starting with the given string."""
+  title_not_starts_with: String
+
+  """All values ending with the given string."""
+  title_ends_with: String
+
+  """All values not ending with the given string."""
+  title_not_ends_with: String
+  markup: String
+
+  """All values that are not equal to given value."""
+  markup_not: String
+
+  """All values that are contained in given list."""
+  markup_in: [String!]
+
+  """All values that are not contained in given list."""
+  markup_not_in: [String!]
+
+  """All values less than the given value."""
+  markup_lt: String
+
+  """All values less than or equal the given value."""
+  markup_lte: String
+
+  """All values greater than the given value."""
+  markup_gt: String
+
+  """All values greater than or equal the given value."""
+  markup_gte: String
+
+  """All values containing the given string."""
+  markup_contains: String
+
+  """All values not containing the given string."""
+  markup_not_contains: String
+
+  """All values starting with the given string."""
+  markup_starts_with: String
+
+  """All values not starting with the given string."""
+  markup_not_starts_with: String
+
+  """All values ending with the given string."""
+  markup_ends_with: String
+
+  """All values not ending with the given string."""
+  markup_not_ends_with: String
+  published: Boolean
+
+  """All values that are not equal to given value."""
+  published_not: Boolean
+  game: AnnotatedGameWhereInput
+}
+
+input BlogPostWhereUniqueInput {
+  id: ID
+  slug: String
 }
 
 type Challenge implements Node {
@@ -172,31 +659,316 @@ input ChallengeWhereUniqueInput {
   id: ID
 }
 
+type Fen {
+  fen: String!
+}
+
+"""A connection to a list of items."""
+type FenConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [FenEdge]!
+  aggregate: AggregateFen!
+}
+
+input FenCreateInput {
+  fen: String!
+}
+
+input FenCreateOneInput {
+  create: FenCreateInput
+}
+
+"""An edge in a connection."""
+type FenEdge {
+  """The item at the end of the edge."""
+  node: Fen!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum FenOrderByInput {
+  fen_ASC
+  fen_DESC
+  id_ASC
+  id_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type FenPreviousValues {
+  fen: String!
+}
+
+type FenSubscriptionPayload {
+  mutation: MutationType!
+  node: Fen
+  updatedFields: [String!]
+  previousValues: FenPreviousValues
+}
+
+input FenSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [FenSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [FenSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [FenSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: FenWhereInput
+}
+
+input FenUpdateDataInput {
+  fen: String
+}
+
+input FenUpdateInput {
+  fen: String
+}
+
+input FenUpdateOneInput {
+  create: FenCreateInput
+  disconnect: Boolean
+  delete: Boolean
+  update: FenUpdateDataInput
+  upsert: FenUpsertNestedInput
+}
+
+input FenUpsertNestedInput {
+  update: FenUpdateDataInput!
+  create: FenCreateInput!
+}
+
+input FenWhereInput {
+  """Logical AND on all given filters."""
+  AND: [FenWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [FenWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [FenWhereInput!]
+  fen: String
+
+  """All values that are not equal to given value."""
+  fen_not: String
+
+  """All values that are contained in given list."""
+  fen_in: [String!]
+
+  """All values that are not contained in given list."""
+  fen_not_in: [String!]
+
+  """All values less than the given value."""
+  fen_lt: String
+
+  """All values less than or equal the given value."""
+  fen_lte: String
+
+  """All values greater than the given value."""
+  fen_gt: String
+
+  """All values greater than or equal the given value."""
+  fen_gte: String
+
+  """All values containing the given string."""
+  fen_contains: String
+
+  """All values not containing the given string."""
+  fen_not_contains: String
+
+  """All values starting with the given string."""
+  fen_starts_with: String
+
+  """All values not starting with the given string."""
+  fen_not_starts_with: String
+
+  """All values ending with the given string."""
+  fen_ends_with: String
+
+  """All values not ending with the given string."""
+  fen_not_ends_with: String
+}
+
 """
 The `Long` scalar type represents non-fractional signed whole numeric values.
 Long can represent values between -(2^63) and 2^63 - 1.
 """
 scalar Long
 
+type MoveSet {
+  moves: [String!]!
+}
+
+"""A connection to a list of items."""
+type MoveSetConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [MoveSetEdge]!
+  aggregate: AggregateMoveSet!
+}
+
+input MoveSetCreateInput {
+  moves: MoveSetCreatemovesInput
+}
+
+input MoveSetCreateManyInput {
+  create: [MoveSetCreateInput!]
+}
+
+input MoveSetCreatemovesInput {
+  set: [String!]
+}
+
+"""An edge in a connection."""
+type MoveSetEdge {
+  """The item at the end of the edge."""
+  node: MoveSet!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum MoveSetOrderByInput {
+  id_ASC
+  id_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type MoveSetPreviousValues {
+  moves: [String!]!
+}
+
+type MoveSetSubscriptionPayload {
+  mutation: MutationType!
+  node: MoveSet
+  updatedFields: [String!]
+  previousValues: MoveSetPreviousValues
+}
+
+input MoveSetSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [MoveSetSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [MoveSetSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [MoveSetSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: MoveSetWhereInput
+}
+
+input MoveSetUpdateInput {
+  moves: MoveSetUpdatemovesInput
+}
+
+input MoveSetUpdateManyInput {
+  create: [MoveSetCreateInput!]
+}
+
+input MoveSetUpdatemovesInput {
+  set: [String!]
+}
+
+input MoveSetWhereInput {
+  """Logical AND on all given filters."""
+  AND: [MoveSetWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [MoveSetWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [MoveSetWhereInput!]
+}
+
 type Mutation {
+  createBlogPost(data: BlogPostCreateInput!): BlogPost!
   createChallenge(data: ChallengeCreateInput!): Challenge!
+  createFen(data: FenCreateInput!): Fen!
   createUser(data: UserCreateInput!): User!
   createTimeControl(data: TimeControlCreateInput!): TimeControl!
+  createMoveSet(data: MoveSetCreateInput!): MoveSet!
+  createAnnotatedGame(data: AnnotatedGameCreateInput!): AnnotatedGame!
+  updateBlogPost(data: BlogPostUpdateInput!, where: BlogPostWhereUniqueInput!): BlogPost
   updateChallenge(data: ChallengeUpdateInput!, where: ChallengeWhereUniqueInput!): Challenge
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateTimeControl(data: TimeControlUpdateInput!, where: TimeControlWhereUniqueInput!): TimeControl
+  updateAnnotatedGame(data: AnnotatedGameUpdateInput!, where: AnnotatedGameWhereUniqueInput!): AnnotatedGame
+  deleteBlogPost(where: BlogPostWhereUniqueInput!): BlogPost
   deleteChallenge(where: ChallengeWhereUniqueInput!): Challenge
   deleteUser(where: UserWhereUniqueInput!): User
   deleteTimeControl(where: TimeControlWhereUniqueInput!): TimeControl
+  deleteAnnotatedGame(where: AnnotatedGameWhereUniqueInput!): AnnotatedGame
+  upsertBlogPost(where: BlogPostWhereUniqueInput!, create: BlogPostCreateInput!, update: BlogPostUpdateInput!): BlogPost!
   upsertChallenge(where: ChallengeWhereUniqueInput!, create: ChallengeCreateInput!, update: ChallengeUpdateInput!): Challenge!
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
   upsertTimeControl(where: TimeControlWhereUniqueInput!, create: TimeControlCreateInput!, update: TimeControlUpdateInput!): TimeControl!
+  upsertAnnotatedGame(where: AnnotatedGameWhereUniqueInput!, create: AnnotatedGameCreateInput!, update: AnnotatedGameUpdateInput!): AnnotatedGame!
+  updateManyBlogPosts(data: BlogPostUpdateInput!, where: BlogPostWhereInput): BatchPayload!
   updateManyChallenges(data: ChallengeUpdateInput!, where: ChallengeWhereInput): BatchPayload!
+  updateManyFens(data: FenUpdateInput!, where: FenWhereInput): BatchPayload!
   updateManyUsers(data: UserUpdateInput!, where: UserWhereInput): BatchPayload!
   updateManyTimeControls(data: TimeControlUpdateInput!, where: TimeControlWhereInput): BatchPayload!
+  updateManyMoveSets(data: MoveSetUpdateInput!, where: MoveSetWhereInput): BatchPayload!
+  updateManyAnnotatedGames(data: AnnotatedGameUpdateInput!, where: AnnotatedGameWhereInput): BatchPayload!
+  deleteManyBlogPosts(where: BlogPostWhereInput): BatchPayload!
   deleteManyChallenges(where: ChallengeWhereInput): BatchPayload!
+  deleteManyFens(where: FenWhereInput): BatchPayload!
   deleteManyUsers(where: UserWhereInput): BatchPayload!
   deleteManyTimeControls(where: TimeControlWhereInput): BatchPayload!
+  deleteManyMoveSets(where: MoveSetWhereInput): BatchPayload!
+  deleteManyAnnotatedGames(where: AnnotatedGameWhereInput): BatchPayload!
 }
 
 enum MutationType {
@@ -227,15 +999,25 @@ type PageInfo {
 }
 
 type Query {
+  blogPosts(where: BlogPostWhereInput, orderBy: BlogPostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [BlogPost]!
   challenges(where: ChallengeWhereInput, orderBy: ChallengeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Challenge]!
+  fens(where: FenWhereInput, orderBy: FenOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Fen]!
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   timeControls(where: TimeControlWhereInput, orderBy: TimeControlOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [TimeControl]!
+  moveSets(where: MoveSetWhereInput, orderBy: MoveSetOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [MoveSet]!
+  annotatedGames(where: AnnotatedGameWhereInput, orderBy: AnnotatedGameOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [AnnotatedGame]!
+  blogPost(where: BlogPostWhereUniqueInput!): BlogPost
   challenge(where: ChallengeWhereUniqueInput!): Challenge
   user(where: UserWhereUniqueInput!): User
   timeControl(where: TimeControlWhereUniqueInput!): TimeControl
+  annotatedGame(where: AnnotatedGameWhereUniqueInput!): AnnotatedGame
+  blogPostsConnection(where: BlogPostWhereInput, orderBy: BlogPostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): BlogPostConnection!
   challengesConnection(where: ChallengeWhereInput, orderBy: ChallengeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ChallengeConnection!
+  fensConnection(where: FenWhereInput, orderBy: FenOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): FenConnection!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
   timeControlsConnection(where: TimeControlWhereInput, orderBy: TimeControlOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TimeControlConnection!
+  moveSetsConnection(where: MoveSetWhereInput, orderBy: MoveSetOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): MoveSetConnection!
+  annotatedGamesConnection(where: AnnotatedGameWhereInput, orderBy: AnnotatedGameOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AnnotatedGameConnection!
 
   """Fetches an object given its ID"""
   node(
@@ -245,9 +1027,13 @@ type Query {
 }
 
 type Subscription {
+  blogPost(where: BlogPostSubscriptionWhereInput): BlogPostSubscriptionPayload
   challenge(where: ChallengeSubscriptionWhereInput): ChallengeSubscriptionPayload
+  fen(where: FenSubscriptionWhereInput): FenSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
   timeControl(where: TimeControlSubscriptionWhereInput): TimeControlSubscriptionPayload
+  moveSet(where: MoveSetSubscriptionWhereInput): MoveSetSubscriptionPayload
+  annotatedGame(where: AnnotatedGameSubscriptionWhereInput): AnnotatedGameSubscriptionPayload
 }
 
 type TimeControl implements Node {

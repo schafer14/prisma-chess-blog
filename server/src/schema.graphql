@@ -1,5 +1,11 @@
 # import Post from "./generated/prisma.graphql"
 
 type Query {
-  timeControls: [TimeControl!]!
+  posts: [BlogPost!]!
+  post(id: ID!): BlogPost
+}
+
+type Mutation {
+  createBlogPost(data: BlogPostCreateInput!): BlogPost
+  publishBlogPost(id: ID!): BlogPost
 }
