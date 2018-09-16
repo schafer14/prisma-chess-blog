@@ -6,6 +6,8 @@ import {withStyles} from '@material-ui/core/styles'
 import HomePage from './HomePage'
 import RegisterPage from './RegisterPage'
 import LoginPage from './Login'
+import PostPage from '../containers/Posts/Router'
+
 import Nav from './Nav'
 import Drawer from './Drawer'
 import styles from '../constants/layoutstyles'
@@ -48,6 +50,7 @@ class App extends Component {
                 <Route exact path="/" component={HomePage} />
                 <Route path="/register" component={RegisterPage} />
                 <Route path="/login" component={LoginPage} />
+                <Route path="/posts" component={PostPage} />
               </Switch>
             </main>
           </div>

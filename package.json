@@ -2,7 +2,13 @@
   "name": "react-fullstack-basic",
   "version": "1.0.0",
   "devDependencies": {
-    "react-scripts": "1.1.5"
+    "react-scripts": "1.1.5",
+    "@storybook/react": "^3.4.10",
+    "@storybook/addon-actions": "^3.4.10",
+    "@storybook/addon-links": "^3.4.10",
+    "@storybook/addons": "^3.4.10",
+    "babel-core": "^6.26.3",
+    "babel-runtime": "^6.26.0"
   },
   "dependencies": {
     "@material-ui/core": "^1.5.1",
@@ -10,8 +16,12 @@
     "apollo-boost": "0.1.14",
     "firebase": "^5.4.1",
     "graphql": "0.13.2",
+    "immutability-helper": "^2.8.0",
     "react": "16.4.2",
     "react-apollo": "2.1.11",
+    "react-dnd": "^5.0.0",
+    "react-dnd-html5-backend": "^5.0.1",
+    "react-dnd-touch-backend": "^0.5.1",
     "react-dom": "16.4.2",
     "react-firebaseui": "^3.0.6",
     "react-modal": "3.5.1",
@@ -22,6 +32,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "storybook": "start-storybook -p 9009 -s public",
+    "build-storybook": "build-storybook -s public"
   }
 }

@@ -6,6 +6,8 @@ import ApolloClient from 'apollo-boost'
 
 import App from './components/App'
 
+import './index.css'
+
 const client = new ApolloClient({uri: 'http://localhost:4000'})
 
 ReactDOM.render(
